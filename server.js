@@ -4,6 +4,8 @@ const botRem = new Discord.Client(); //ประกาศ client ขึ้นม
 //คูดาวน์ 8 ชม.
 var loopStart = 28800000;
 var loopEnd   = 43200000;
+var limitTime = 14400000;
+
 
 var moment = require('moment-timezone');
 moment().tz("Asia/Bangkok").format();
@@ -25,7 +27,11 @@ botRem.on('message', message => {
         kzarkarRespawnStart = new Date(moment.now()+loopStart);
         kzarkarRespawnEnd = new Date(moment.now()+loopEnd);
         message.reply('รีเซ็ตลูปเกิด คจาตายเวลา '+convertTime(kzarkaDead)+ ' น.');
-    };
+    }else if(message.content === 'คจารอเกิด'){
+        kzarkarRespawnStart = new Date(moment.now());
+        kzarkarRespawnEnd = new Date(moment.now()+limitTime);
+        message.reply('เซ็ตเวลาคจาเกิด '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
+    }
 });
 
 
