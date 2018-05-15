@@ -6,9 +6,10 @@ var loopStart = 28800000;
 var loopEnd   = 43200000;
 var limitTime = 14400000;
 
+var addtimezone = 22400000;
+
 
 var moment = require('moment-timezone');
-moment().tz("Asia/Bangkok").format();
 
 var kzarkaDead;
 var kzarkarRespawnStart;
@@ -23,13 +24,13 @@ botRem.on('message', message => {
     if (message.content === 'คจา') {
         message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
     }else if(message.content === 'คจาตาย'){
-        kzarkaDead = new Date(moment.now());
-        kzarkarRespawnStart = new Date(moment.now()+loopStart);
-        kzarkarRespawnEnd = new Date(moment.now()+loopEnd);
+        kzarkaDead = new Date(moment.now()+addtimezone);
+        kzarkarRespawnStart = new Date(moment.now()+loopStart+addtimezone);
+        kzarkarRespawnEnd = new Date(moment.now()+loopEnd+addtimezone);
         message.reply('รีเซ็ตลูปเกิด คจาตายเวลา '+convertTime(kzarkaDead)+ ' น.');
     }else if(message.content === 'คจารอเกิด'){
-        kzarkarRespawnStart = new Date(moment.now());
-        kzarkarRespawnEnd = new Date(moment.now()+limitTime);
+        kzarkarRespawnStart = new Date(moment.now()+addtimezone);
+        kzarkarRespawnEnd = new Date(moment.now()+limitTime+addtimezone);
         message.reply('เซ็ตเวลาคจาเกิด '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
     }
 });
