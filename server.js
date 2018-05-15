@@ -6,7 +6,7 @@ var loopStart = 28800000;
 var loopEnd   = 43200000;
 var limitTime = 14400000;
 
-var addtimezone = 22400000;
+var addtimezone = 25200000;
 
 
 var moment = require('moment-timezone');
