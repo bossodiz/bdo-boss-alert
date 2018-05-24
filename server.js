@@ -21,17 +21,37 @@ botRem.on('ready', () => {
 });
 //รอรับ event message เวลามีข้อความโผล่มาในแชท function นี้ก็จะทำงาน
 botRem.on('message', message => { 
-    if (message.content === 'คจา') {
+    var command = message.content.replace(/\s\s+/g, ' ');
+    if (command === 'คจา') {
         message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
-    }else if(message.content === 'คจาตาย'){
+    }else if(command === 'คจาตาย'){
         kzarkaDead = new Date(moment.now()+addtimezone);
         kzarkarRespawnStart = new Date(moment.now()+loopStart+addtimezone);
         kzarkarRespawnEnd = new Date(moment.now()+loopEnd+addtimezone);
         message.reply('รีเซ็ตลูปเกิด คจาตายเวลา '+convertTime(kzarkaDead)+ ' น.');
-    }else if(message.content === 'คจารอเกิด'){
+    }else if(command === 'คจารอเกิด'){
         kzarkarRespawnStart = new Date(moment.now()+addtimezone);
         kzarkarRespawnEnd = new Date(moment.now()+limitTime+addtimezone);
         message.reply('เซ็ตเวลาคจาเกิด '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
+    }else if(command.substring(0,7) === 'คจาเกิด'){
+        var valuetext = command.substring(8,command.length).split(" ");
+        var a = valuetext[0];
+        var b = valuetext[1];
+        var c = valuetext[2];
+
+        if(c === 'hr'){
+            var time = parseInt(b)*60*60;
+        }else{
+            var time = parseInt(b)*60;
+        }
+        if(a === '+'){
+            kzarkarRespawnStart = kzarkarRespawnStart+time;
+            kzarkarRespawnEnd = kzarkarRespawnEnd+time;
+        }else{
+            kzarkarRespawnStart = kzarkarRespawnStart-time;
+            kzarkarRespawnEnd = kzarkarRespawnEnd-time;
+        }
+        message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
     }
 });
 
