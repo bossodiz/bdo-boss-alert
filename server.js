@@ -11,9 +11,11 @@ var addtimezone = 25200000;
 
 var moment = require('moment-timezone');
 
-var kzarkaDead;
-var kzarkarRespawnStart;
-var kzarkarRespawnEnd;
+var kzarkaDead = new Date();
+var kzarkarRespawnStart = new Date();
+var kzarkarRespawnEnd = new Date();
+
+var bossreset = true;
 
 //event นี้ทำงานเมื่อ login สำเร็จ
 botRem.on('ready', () => {
@@ -23,34 +25,40 @@ botRem.on('ready', () => {
 botRem.on('message', message => { 
     var command = message.content.replace(/\s\s+/g, ' ');
     if (command === 'คจา') {
-        message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
+        if(!bossreset){
+            message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
+        }else{
+            message.reply('เซิฟเวอร์ปิดปรับปรุง รอเวลารายงานใหม่');
+        }
+    }else if(command === 'คจารีเซ็ต'){
+        bossreset = true;
+        message.reply('คจารีเซ็ต');
     }else if(command === 'คจาตาย'){
+        bossreset = false;
         kzarkaDead = new Date(moment.now()+addtimezone);
         kzarkarRespawnStart = new Date(moment.now()+loopStart+addtimezone);
         kzarkarRespawnEnd = new Date(moment.now()+loopEnd+addtimezone);
         message.reply('รีเซ็ตลูปเกิด คจาตายเวลา '+convertTime(kzarkaDead)+ ' น.');
-    }else if(command === 'คจารอเกิด'){
-        kzarkarRespawnStart = new Date(moment.now()+addtimezone);
-        kzarkarRespawnEnd = new Date(moment.now()+limitTime+addtimezone);
-        message.reply('เซ็ตเวลาคจาเกิด '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
     }else if(command.substring(0,7) === 'คจาเกิด'){
         var valuetext = command.substring(8,command.length).split(" ");
         var a = valuetext[0];
         var b = valuetext[1];
         var c = valuetext[2];
 
-        if(c === 'hr'){
-            var time = parseInt(b)*60*60;
+        if(c === 'ชม'){
+            var time = parseInt(b)*60*60*1000;
         }else{
-            var time = parseInt(b)*60;
+            var time = parseInt(b)*60*1000;
         }
         if(a === '+'){
-            kzarkarRespawnStart = kzarkarRespawnStart+time;
-            kzarkarRespawnEnd = kzarkarRespawnEnd+time;
+            kzarkarRespawnStart = kzarkarRespawnStart.setTime(kzarkarRespawnStart.getTime()+time);
+            kzarkarRespawnEnd = kzarkarRespawnEnd.setTime(kzarkarRespawnEnd.getTime()+time);
         }else{
-            kzarkarRespawnStart = kzarkarRespawnStart-time;
-            kzarkarRespawnEnd = kzarkarRespawnEnd-time;
+            kzarkarRespawnStart = kzarkarRespawnStart.setTime(kzarkarRespawnStart.getTime()-time);
+            kzarkarRespawnEnd = kzarkarRespawnEnd.setTime(kzarkarRespawnEnd.getTime()-time);
         }
+        kzarkarRespawnStart = new Date(kzarkarRespawnStart);
+        kzarkarRespawnEnd = new Date(kzarkarRespawnEnd);
         message.reply('คจาจะเกิดเวลา '+convertTime(kzarkarRespawnStart)+' น. - ' +  convertTime(kzarkarRespawnEnd) + ' น.'  );
     }
 });
