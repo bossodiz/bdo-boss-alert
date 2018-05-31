@@ -40,6 +40,9 @@ botRem.on('message', message => {
     }else if(command === 'คจาตาย'){
         message.reply('คจาตายรอบเวลา '+newtimekzarka[round]+ ' น. / รอบต่อไปเวลา '+newtimekzarka[round+1]+' น.');
         round+=1;
+        if(round === 10){
+            round = 0;
+        }
         // bossreset = false;
         // kzarkaDead = new Date(moment.now()+addtimezone);
         // kzarkarRespawnStart = new Date(moment.now()+loopStart+addtimezone);
