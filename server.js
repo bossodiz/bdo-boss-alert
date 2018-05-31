@@ -23,9 +23,6 @@ var bossreset = true;
 //event นี้ทำงานเมื่อ login สำเร็จ
 botRem.on('ready', () => {
     console.log('Kzarka ready!');
-    console.log(round);
-    console.log(newtimekzarka[round],'  --  '+newtimekzarka[round+1]);
-    console.log(round+=1);
 });
 //รอรับ event message เวลามีข้อความโผล่มาในแชท function นี้ก็จะทำงาน
 botRem.on('message', message => { 
